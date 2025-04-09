@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    fetch(`/api/students/${studentId}`)
+    fetch(`/group19/api/students/${studentId}`)
         .then(res => {
             if (!res.ok) throw new Error("Student niet gevonden");
             return res.json();
@@ -217,11 +217,11 @@ function displayStudent(student) {
     // Maakt een kaart aan en voegt de klasse toe
     const card = document.createElement('a');
     card.classList.add('student-card');
-    card.href = `/student?id=${student.id}`;
+    card.href = `/group19/student?id=${student.id}`;
 
     // Maakt image element aan
     const img = document.createElement('img');
-    img.src = student.photo ? student.photo : '../images/icon.png';
+    img.src = student.photo ? student.photo : '../group19/images/icon.png';
     img.alt = student.firstName;
     img.classList.add("student-card__image", "card__image--Mem1");
 
@@ -230,29 +230,14 @@ function displayStudent(student) {
     name.textContent = student.firstName;
     name.classList.add("card__header");
 
-    // Voeg alle elementen toe aan de kaart
-    card.append(img, name);
+    const button = document.createElement('button');
+    button.textContent = "add";
+    button.onclick = function() {
+        sendFriendRequest(student.id);
+    };
 
-    card.addEventListener('click', () => {
-        localStorage.setItem('studentData', JSON.stringify({
-            id: student.id,
-            firstName: student.firstName,
-            lastName: student.lastName,
-            age: student.age,
-            hobbies: student.hobbies,
-            email: student.email,
-            photo: student.photo,
-            major: student.major,
-            courses: student.courses.map(course => ({
-                title: course.title,
-                teacher: {
-                    firstName: course.teacher.firstName,
-                    lastName: course.teacher.lastName
-                },
-                description: course.description
-            })),
-        }));
-    });
+    // Voeg alle elementen toe aan de kaart
+    card.append(img, name, button);
 
     // Voeg de kaart toe aan de pagina
     mainContainer.appendChild(card);

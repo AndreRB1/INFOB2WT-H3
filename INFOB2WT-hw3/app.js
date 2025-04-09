@@ -21,6 +21,7 @@ const studentapiRoutes = require('./routes/students');
 const studentRoutes = require('./routes/student');
 const registerRouter = require('./routes/register');
 var profileRouter = require('./routes/profile');
+const groupRouter = express.Router();
 
 var app = express();
 
@@ -34,23 +35,28 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/member', membersRouter);
-app.use('/about', aboutRouter);
-app.use('/project', projectRouter);
-app.use('/login', loginRouter);
-app.use('/profile', profileRouter);
-app.use('/register', registerRouter);
-app.use('/users', usersRouter);
-app.use('/courses', coursesRouter);
-app.use('/programs', programsRouter);
-app.use('/messages', messagesRouter);
-app.use('/friends', friendsRouter);
-app.use('/api/students', studentapiRoutes);
-app.use('/student', studentRoutes);
-app.use('/user_courses', user_coursesRouter);
+
+groupRouter.use('/', indexRouter);
+groupRouter.use('/login', loginRouter);
+groupRouter.use('/member', membersRouter);
+groupRouter.use('/about', aboutRouter);
+groupRouter.use('/project', projectRouter);
+groupRouter.use('/profile', profileRouter);
+groupRouter.use('/register', registerRouter);
+groupRouter.use('/users', usersRouter);
+groupRouter.use('/courses', coursesRouter);
+groupRouter.use('/programs', programsRouter);
+groupRouter.use('/messages', messagesRouter);
+groupRouter.use('/friends', friendsRouter);
+groupRouter.use('/api/students', studentapiRoutes);
+groupRouter.use('/student', studentRoutes);
+groupRouter.use('/user_courses', user_coursesRouter);
+
+// gebruik deze router onder /group19
+app.use('/group19', groupRouter);
+
+app.use('/group19', express.static(path.join(__dirname, 'public')));
 
 
 // catch 404 and forward to error handler
@@ -85,5 +91,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.sendFile(path.join(__dirname, 'views', 'error.html')); 
 });
+app.listen(8019);
 
 module.exports = app;
